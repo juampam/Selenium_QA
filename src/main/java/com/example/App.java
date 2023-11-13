@@ -15,10 +15,31 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.Keys;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import io.github.cdimascio.dotenv.Dotenv;
 
 
 public class App {
     public static void main( String[] args ){
+		Dotenv dotenv = Dotenv.load();
+
+        // DOTENV variables
+		String webTablesName = dotenv.get("WEB_TABLES_NAME");
+		String webTablesLastName = dotenv.get("WEB_TABLES_LAST_NAME");
+        String envName = dotenv.get("NAME");
+        String envLastName = dotenv.get("LAST_NAME");
+        String envEmail = dotenv.get("EMAIL");
+        String envAge = dotenv.get("AGE");
+        String envSalary = dotenv.get("SALARY");
+        String envCountry = dotenv.get("COUNTRY");
+        String envPhone = dotenv.get("PHONE");
+        String envYear = dotenv.get("YEAR");
+        String envMonth = dotenv.get("MONTH");
+        String envDay = dotenv.get("DAY");
+        String envAddress = dotenv.get("ADDRESS");
+
+
+
+        String direccion = dotenv.get("DIRECCION");
     	WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 	try{
@@ -68,12 +89,12 @@ public class App {
 		WebElement department = driver.findElement(By.id("department"));
 		WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
 
-		nameField.sendKeys("Juan");
-		lastname.sendKeys("Perez");
-		email.sendKeys("test@test.bi.com.gt");
-		age.sendKeys("23");
-		salary.sendKeys("8000");
-		department.sendKeys("Guatemala");
+		nameField.sendKeys(webTablesName);
+		lastname.sendKeys(webTablesLastName);
+		email.sendKeys(envEmail);
+		age.sendKeys(envAge);
+		salary.sendKeys(envSalary);
+		department.sendKeys(envCountry);
 		submitButton.click();
 
 		try {
@@ -101,11 +122,11 @@ public class App {
 	WebElement addressForm = driver.findElement(By.id("currentAddress"));
 	//WebElement cityForm = driver.findElement(By.xpath("//div[@id='city']"));
 	//WebElement stateForm = driver.findElement(By.xpath("//*[@id='state']"));
-	nameForm.sendKeys("Juan Pablo");
-	lastnameForm.sendKeys("Muralles");
-	emailForm.sendKeys("test@test.bi.com.gt");
+	nameForm.sendKeys(envName);
+	lastnameForm.sendKeys(envLastName);
+	emailForm.sendKeys(envEmail);
 	buttonGender.click();
-	phoneForm.sendKeys("1234567890");
+	phoneForm.sendKeys(envPhone);
 	((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", birthday);
 	birthday.click();
 	WebElement selYear = driver.findElement(By.xpath("//*[@class='react-datepicker__year-select']"));
@@ -143,7 +164,7 @@ public class App {
 
 
 	((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addressForm);
-	addressForm.sendKeys("Dirección: Banco Industrial Zona 4. 7ª. Avenida 5-10, Zona 4 Centro Financiero Torre I");
+	addressForm.sendKeys(envAddress);
 	//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cityForm);
 	WebElement state = driver.findElement(By.id("state"));
 	((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", state);
@@ -157,14 +178,15 @@ public class App {
 	 CityToSelect.click();
 	  Actions actions = new Actions(driver);
         actions.sendKeys(phoneForm, Keys.RETURN).build().perform();
-	WebElement close = driver.findElement(By.id("closeLargeModal"));
-	((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", close);
-	close.click();
-	try {
+		try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+	WebElement close = driver.findElement(By.id("closeLargeModal"));
+	((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", close);
+	close.click();
+	
 
 	driver.get("https://demoqa.com/books");
 	WebElement books = driver.findElement(By.xpath("//div[@class='element-list collapse show']//li[@id='item-2']"));
